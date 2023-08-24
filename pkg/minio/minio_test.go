@@ -28,6 +28,7 @@ import (
 
 	"github.com/google/uuid"
 	miniov7 "github.com/minio/minio-go/v7"
+	"github.com/onsi/gomega"
 	"github.com/ory/dockertest/v3"
 	"github.com/ory/dockertest/v3/docker"
 	"gotest.tools/assert"
@@ -348,4 +349,59 @@ func getObjectFile() string {
 	  region: us-east-1
 	  timeout: 30s
 	`
+}
+
+func TestGetLookupType(t *testing.T) {
+	typeUnexpect := "unexpect"
+	typeAuto := sourcev1.BucketLookupAuto
+	typeDNS := sourcev1.BucketLookupDNS
+	typePath := sourcev1.BucketLookupPath
+
+	tests := []struct {
+		name   string
+		bucket sourcev1.Bucket
+		want   miniov7.BucketLookupType
+	}{
+		{
+			name:   "lookup type defalut",
+			bucket: sourcev1.Bucket{Spec: sourcev1.BucketSpec{}},
+			want:   miniov7.BucketLookupPath,
+		},
+		{
+			name: "lookup type unexpect string",
+			bucket: sourcev1.Bucket{
+				Spec: sourcev1.BucketSpec{LookupType: &typeUnexpect},
+			},
+			want: miniov7.BucketLookupPath,
+		},
+		{
+			name: "lookup type auto",
+			bucket: sourcev1.Bucket{
+				Spec: sourcev1.BucketSpec{LookupType: &typeAuto},
+			},
+			want: miniov7.BucketLookupAuto,
+		},
+		{
+			name: "lookup type dns",
+			bucket: sourcev1.Bucket{
+				Spec: sourcev1.BucketSpec{LookupType: &typeDNS},
+			},
+			want: miniov7.BucketLookupDNS,
+		},
+		{
+			name: "lookup type path",
+			bucket: sourcev1.Bucket{
+				Spec: sourcev1.BucketSpec{LookupType: &typePath},
+			},
+			want: miniov7.BucketLookupPath,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			g := gomega.NewWithT(t)
+
+			got := getLookupType(&tt.bucket)
+			g.Expect(got).To(gomega.Equal(tt.want))
+		})
+	}
 }

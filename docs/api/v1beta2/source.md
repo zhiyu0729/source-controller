@@ -223,6 +223,20 @@ references to this object.
 NOTE: Not implemented, provisional as of <a href="https://github.com/fluxcd/flux2/pull/2092">https://github.com/fluxcd/flux2/pull/2092</a></p>
 </td>
 </tr>
+<tr>
+<td>
+<code>lookupType</code><br>
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>LookupType is type of url lookup supported by bucket server,
+only takes effect when the Provider is &lsquo;generic&rsquo;.
+Defaults to &lsquo;path&rsquo;.</p>
+</td>
+</tr>
 </table>
 </td>
 </tr>
@@ -1505,6 +1519,20 @@ github.com/fluxcd/pkg/apis/acl.AccessFrom
 <p>AccessFrom specifies an Access Control List for allowing cross-namespace
 references to this object.
 NOTE: Not implemented, provisional as of <a href="https://github.com/fluxcd/flux2/pull/2092">https://github.com/fluxcd/flux2/pull/2092</a></p>
+</td>
+</tr>
+<tr>
+<td>
+<code>lookupType</code><br>
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>LookupType is type of url lookup supported by bucket server,
+only takes effect when the Provider is &lsquo;generic&rsquo;.
+Defaults to &lsquo;path&rsquo;.</p>
 </td>
 </tr>
 </tbody>

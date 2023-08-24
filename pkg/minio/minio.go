@@ -40,7 +40,7 @@ func NewClient(bucket *sourcev1.Bucket, secret *corev1.Secret) (*MinioClient, er
 	opt := minio.Options{
 		Region:       bucket.Spec.Region,
 		Secure:       !bucket.Spec.Insecure,
-		BucketLookup: minio.BucketLookupPath,
+		BucketLookup: getLookupType(bucket),
 	}
 
 	if secret != nil {
@@ -132,4 +132,20 @@ func (c *MinioClient) ObjectIsNotFound(err error) bool {
 // Close closes the Minio Client and logs any useful errors.
 func (c *MinioClient) Close(_ context.Context) {
 	// Minio client does not provide a close method
+}
+
+var lookupNameToEnumType = map[string]minio.BucketLookupType{
+	sourcev1.BucketLookupAuto: minio.BucketLookupAuto,
+	sourcev1.BucketLookupDNS:  minio.BucketLookupDNS,
+	sourcev1.BucketLookupPath: minio.BucketLookupPath,
+}
+
+func getLookupType(bucket *sourcev1.Bucket) minio.BucketLookupType {
+	if bucket.Spec.LookupType != nil {
+		if t, ok := lookupNameToEnumType[*bucket.Spec.LookupType]; ok {
+			return t
+		}
+	}
+	// default value
+	return minio.BucketLookupPath
 }

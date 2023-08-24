@@ -46,6 +46,15 @@ const (
 	AzureBucketProvider string = "azure"
 )
 
+const (
+	// BucketLookupAuto is automatic determine URL access
+	BucketLookupAuto string = "auto"
+	// BucketLookupDNS is virtual hosted style URL access
+	BucketLookupDNS string = "dns"
+	// BucketLookupPath is path style URL access
+	BucketLookupPath string = "path"
+)
+
 // BucketSpec specifies the required configuration to produce an Artifact for
 // an object storage bucket.
 type BucketSpec struct {
@@ -109,6 +118,14 @@ type BucketSpec struct {
 	// NOTE: Not implemented, provisional as of https://github.com/fluxcd/flux2/pull/2092
 	// +optional
 	AccessFrom *acl.AccessFrom `json:"accessFrom,omitempty"`
+
+	// LookupType is type of url lookup supported by bucket server,
+	// only takes effect when the Provider is 'generic'.
+	// Defaults to 'path'.
+	// +kubebuilder:validation:Enum=auto;dns;path
+	// +kubebuilder:default:=path
+	// +optional
+	LookupType *string `json:"lookupType,omitempty"`
 }
 
 // BucketStatus records the observed state of a Bucket.

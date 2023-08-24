@@ -806,6 +806,17 @@ Artifact. When the field is set to `false` or removed, it will resume.
 For practical information, see
 [suspending and resuming](#suspending-and-resuming).
 
+### Lookup type
+
+`.spec.lookupType` is an optional field to select which url lookup type to access bucket. For example, `dns` will use virtual-hosted–style URL access , `path`  will use path-style URL access, or you can also use `auto` to automatic.
+
+Supported options are:
+- auto
+- dns
+- path
+
+It only takes effect when the [Provider](#provider) is [generic](#generic). If you do not specify `.spec.lookupType`, it defaults to `path`.
+
 ## Working with Buckets
 
 ### Excluding files
