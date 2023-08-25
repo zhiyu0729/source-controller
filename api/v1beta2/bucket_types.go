@@ -121,11 +121,11 @@ type BucketSpec struct {
 
 	// LookupType is type of url lookup supported by bucket server,
 	// only takes effect when the Provider is 'generic'.
-	// Defaults to 'auto'.
+	// Defaults to 'path'.
 	// +kubebuilder:validation:Enum=auto;dns;path
-	// +kubebuilder:default:=auto
+	// +kubebuilder:default:=path
 	// +optional
-	LookupType string `json:"lookupType,omitempty"`
+	LookupType *string `json:"lookupType,omitempty"`
 }
 
 // BucketStatus records the observed state of a Bucket.

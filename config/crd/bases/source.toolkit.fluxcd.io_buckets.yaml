@@ -332,10 +332,10 @@ spec:
                 pattern: ^([0-9]+(\.[0-9]+)?(ms|s|m|h))+$
                 type: string
               lookupType:
-                default: auto
+                default: path
                 description: LookupType is type of url lookup supported by bucket
                   server, only takes effect when the Provider is 'generic'. Defaults
-                  to 'auto'.
+                  to 'path'.
                 enum:
                 - auto
                 - dns

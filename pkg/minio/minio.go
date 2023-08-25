@@ -40,7 +40,7 @@ func NewClient(bucket *sourcev1.Bucket, secret *corev1.Secret) (*MinioClient, er
 	opt := minio.Options{
 		Region:       bucket.Spec.Region,
 		Secure:       !bucket.Spec.Insecure,
-		BucketLookup: getLookupTypeFromName(bucket.Spec.LookupType),
+		BucketLookup: getLookupType(bucket),
 	}
 
 	if secret != nil {
@@ -140,11 +140,12 @@ var lookupNameToEnumType = map[string]minio.BucketLookupType{
 	sourcev1.BucketLookupPath: minio.BucketLookupPath,
 }
 
-func getLookupTypeFromName(name string) minio.BucketLookupType {
-	t, ok := lookupNameToEnumType[name]
-	if !ok {
-		// default value
-		return minio.BucketLookupAuto
+func getLookupType(bucket *sourcev1.Bucket) minio.BucketLookupType {
+	if bucket.Spec.LookupType != nil {
+		if t, ok := lookupNameToEnumType[*bucket.Spec.LookupType]; ok {
+			return t
+		}
 	}
-	return t
+	// default value
+	return minio.BucketLookupPath
 }
